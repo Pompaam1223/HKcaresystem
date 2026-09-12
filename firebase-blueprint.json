@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Student record including individual care screening, SDQ, and home visit data",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "prefix": { "type": "string" },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "fullName": { "type": "string" },
+        "gender": { "type": "string" },
+        "level": { "type": "string" },
+        "grade": { "type": "string" },
+        "classroom": { "type": "string" },
+        "overallStatus": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["id", "fullName", "classroom"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Log of actions and data updates performed across devices",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "action", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Student documents accessible across all teacher devices"
+    },
+    "/activity_logs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Activity logs recorded across devices"
+    }
+  }
+}

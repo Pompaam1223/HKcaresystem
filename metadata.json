@@ -1,0 +1,6 @@
+{
+  "name": "HUAYKRAI CARE SYSTEM ระบบดูแลช่วยเหลือนักเรียน",
+  "description": "HUAYKRAI CARE SYSTEM ระบบดูแลช่วยเหลือนักเรียน โรงเรียนบ้านห้วยไคร้ ครบวงจร คัดกรอง เยี่ยมบ้าน วิเคราะห์รายบุคคล ประเมิน SDQ ส่งต่อ และติดตามผล",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
