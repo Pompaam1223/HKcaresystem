@@ -151,38 +151,68 @@ const STORAGE_KEYS = {
 
 export const StudentCareProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [students, setStudents] = useState<Student[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.STUDENTS);
-    const rawList: Student[] = saved ? JSON.parse(saved) : INITIAL_STUDENTS;
-    return rawList.map((s) => ({
-      ...s,
-      advisorName: getAdvisorTextForClassroom(s.classroom),
-      avatarUrl: getStudentCartoonAvatarDataUrl(s.gender, s.prefix, s.seatNumber || s.id),
-    }));
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.STUDENTS) : null;
+      const rawList: Student[] = saved ? JSON.parse(saved) : INITIAL_STUDENTS;
+      return rawList.map((s) => ({
+        ...s,
+        advisorName: getAdvisorTextForClassroom(s.classroom),
+        avatarUrl: getStudentCartoonAvatarDataUrl(s.gender, s.prefix, s.seatNumber || s.id),
+      }));
+    } catch (e) {
+      console.warn('Failed to parse students from localStorage:', e);
+      return INITIAL_STUDENTS;
+    }
   });
 
   const [screenings, setScreenings] = useState<StudentScreening[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.SCREENINGS);
-    return saved ? JSON.parse(saved) : INITIAL_SCREENINGS;
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.SCREENINGS) : null;
+      return saved ? JSON.parse(saved) : INITIAL_SCREENINGS;
+    } catch (e) {
+      console.warn('Failed to parse screenings from localStorage:', e);
+      return INITIAL_SCREENINGS;
+    }
   });
 
   const [homeVisits, setHomeVisits] = useState<HomeVisitRecord[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.HOME_VISITS);
-    return saved ? JSON.parse(saved) : INITIAL_HOME_VISITS;
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.HOME_VISITS) : null;
+      return saved ? JSON.parse(saved) : INITIAL_HOME_VISITS;
+    } catch (e) {
+      console.warn('Failed to parse homeVisits from localStorage:', e);
+      return INITIAL_HOME_VISITS;
+    }
   });
 
   const [sdqEvaluations, setSdqEvaluations] = useState<SDQEvaluation[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.SDQ);
-    return saved ? JSON.parse(saved) : INITIAL_SDQ_EVALUATIONS;
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.SDQ) : null;
+      return saved ? JSON.parse(saved) : INITIAL_SDQ_EVALUATIONS;
+    } catch (e) {
+      console.warn('Failed to parse SDQ from localStorage:', e);
+      return INITIAL_SDQ_EVALUATIONS;
+    }
   });
 
   const [referrals, setReferrals] = useState<StudentReferral[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.REFERRALS);
-    return saved ? JSON.parse(saved) : INITIAL_REFERRALS;
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.REFERRALS) : null;
+      return saved ? JSON.parse(saved) : INITIAL_REFERRALS;
+    } catch (e) {
+      console.warn('Failed to parse referrals from localStorage:', e);
+      return INITIAL_REFERRALS;
+    }
   });
 
   const [interventions, setInterventions] = useState<InterventionLog[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.INTERVENTIONS);
-    return saved ? JSON.parse(saved) : INITIAL_INTERVENTIONS;
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.INTERVENTIONS) : null;
+      return saved ? JSON.parse(saved) : INITIAL_INTERVENTIONS;
+    } catch (e) {
+      console.warn('Failed to parse interventions from localStorage:', e);
+      return INITIAL_INTERVENTIONS;
+    }
   });
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
@@ -309,27 +339,51 @@ export const StudentCareProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   // Sync to local storage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(students));
+    try {
+      localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(students));
+    } catch (e) {
+      console.warn('localStorage setItem failed:', e);
+    }
   }, [students]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.SCREENINGS, JSON.stringify(screenings));
+    try {
+      localStorage.setItem(STORAGE_KEYS.SCREENINGS, JSON.stringify(screenings));
+    } catch (e) {
+      console.warn('localStorage setItem failed:', e);
+    }
   }, [screenings]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.HOME_VISITS, JSON.stringify(homeVisits));
+    try {
+      localStorage.setItem(STORAGE_KEYS.HOME_VISITS, JSON.stringify(homeVisits));
+    } catch (e) {
+      console.warn('localStorage setItem failed:', e);
+    }
   }, [homeVisits]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.SDQ, JSON.stringify(sdqEvaluations));
+    try {
+      localStorage.setItem(STORAGE_KEYS.SDQ, JSON.stringify(sdqEvaluations));
+    } catch (e) {
+      console.warn('localStorage setItem failed:', e);
+    }
   }, [sdqEvaluations]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.REFERRALS, JSON.stringify(referrals));
+    try {
+      localStorage.setItem(STORAGE_KEYS.REFERRALS, JSON.stringify(referrals));
+    } catch (e) {
+      console.warn('localStorage setItem failed:', e);
+    }
   }, [referrals]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.INTERVENTIONS, JSON.stringify(interventions));
+    try {
+      localStorage.setItem(STORAGE_KEYS.INTERVENTIONS, JSON.stringify(interventions));
+    } catch (e) {
+      console.warn('localStorage setItem failed:', e);
+    }
   }, [interventions]);
 
   const openReportModal = (type: ReportModalState['type'], studentId?: string) => {
@@ -546,7 +600,7 @@ export const StudentCareProvider: React.FC<{ children: React.ReactNode }> = ({ c
     sdqCount: sdqEvaluations.length,
     sdqPercent: students.length ? Math.round((sdqEvaluations.length / students.length) * 100) : 0,
     referralCount: referrals.length,
-    referralResolved: referrals.filter((r) => r.status === 'completed').length,
+    referralResolved: referrals.filter((r) => r.currentStatus === 'resolved').length,
     specialEduCount: students.filter((s) => s.hasDisability).length,
   };
 

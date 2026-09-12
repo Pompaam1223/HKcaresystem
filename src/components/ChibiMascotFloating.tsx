@@ -24,7 +24,7 @@ export const ChibiMascotFloating: React.FC = () => {
   const { 
     students, 
     setActiveTab, 
-    setSelectedStudentForDetail, 
+    setActiveStudentForModal, 
     openReportModal 
   } = useStudentCare();
 
@@ -171,7 +171,7 @@ export const ChibiMascotFloating: React.FC = () => {
                     <div 
                       key={student.id}
                       onClick={() => {
-                        setSelectedStudentForDetail(student);
+                        setActiveStudentForModal(student);
                         setIsOpen(false);
                       }}
                       className="p-2 bg-slate-50 hover:bg-blue-50 rounded-xl border border-slate-200 cursor-pointer flex items-center justify-between gap-2 transition-all hover:border-blue-300"

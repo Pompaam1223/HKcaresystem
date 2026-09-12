@@ -42,11 +42,11 @@ const MainContent: React.FC = () => {
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-5 space-y-5">
         {/* Navigation Tabs */}
-        <Navigation onOpenNewStudent={() => setIsNewStudentOpen(true)} />
+        <Navigation />
 
         {/* Tab Content Routing */}
         <section className="transition-all duration-150">
-          {activeTab === 'dashboard' && <DashboardView onOpenNewStudent={() => setIsNewStudentOpen(true)} />}
+          {activeTab === 'dashboard' && <DashboardView />}
           {activeTab === 'screening' && <ScreeningView />}
           {activeTab === 'homevisit' && <HomeVisitView />}
           {activeTab === 'analysis' && <StudentAnalysisView />}

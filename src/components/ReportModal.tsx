@@ -275,7 +275,7 @@ export const ReportModal: React.FC = () => {
                   <div><b>ชั้น/ห้อง:</b> {currentStudent.classroom} เลขที่ {currentStudent.seatNumber}</div>
                   <div><b>รหัสประจำตัว:</b> {currentStudent.studentCode}</div>
                   <div><b>วันที่เยี่ยมบ้าน:</b> {homeVisit?.visitDate || 'ยังไม่ได้บันทึก'}</div>
-                  <div><b>ผู้ปกครองที่ให้ข้อมูล:</b> {homeVisit?.intervieweeName || currentStudent.parentName} ({homeVisit?.intervieweeRelation || 'บิดา/มารดา'})</div>
+                  <div><b>ผู้ปกครองที่ให้ข้อมูล:</b> {currentStudent.parentName} ({homeVisit?.livingWith || 'บิดา/มารดา'})</div>
                   <div><b>ครูผู้เยี่ยมบ้าน:</b> {homeVisit?.visitorName || currentStudent.advisorName}</div>
                 </div>
               </div>
@@ -284,29 +284,28 @@ export const ReportModal: React.FC = () => {
                 <div className="space-y-3 text-xs">
                   <div className="border border-slate-200 p-3 rounded">
                     <b>1. สภาพที่อยู่อาศัยและสิ่งแวดล้อม:</b>
-                    <p className="mt-1">ลักษณะบ้าน: {homeVisit.livingCondition} • สิ่งแวดล้อมชุมชน: {homeVisit.neighborhoodEnvironment}</p>
-                    <p className="mt-1">ระยะทางมาโรงเรียน: {homeVisit.distanceToSchoolKm} กม. • การเดินทาง: {homeVisit.travelMethod}</p>
+                    <p className="mt-1">ลักษณะบ้าน: {homeVisit.houseType} • สภาพบ้าน: {homeVisit.homeCondition}</p>
+                    <p className="mt-1">ระยะทางมาโรงเรียน: {homeVisit.distanceFromSchoolKm} กม. • การเดินทาง: {homeVisit.commuteMethod}</p>
                   </div>
 
                   <div className="border border-slate-200 p-3 rounded">
                     <b>2. ความสัมพันธ์และเศรษฐกิจในครอบครัว:</b>
                     <p className="mt-1">สัมพันธภาพในบ้าน: {homeVisit.familyRelationship}</p>
-                    <p className="mt-1">รายได้ครอบครัวเฉลี่ย: {homeVisit.familyIncomePerMonth.toLocaleString()} บาท/เดือน</p>
-                    <p className="mt-1">ภาระหนี้สิน: {homeVisit.familyDebtStatus}</p>
+                    <p className="mt-1">รายได้ครอบครัวเฉลี่ย: {homeVisit.monthlyIncome.toLocaleString()} บาท/เดือน</p>
+                    <p className="mt-1">ภาระหนี้สิน: {homeVisit.hasDebt ? 'มีหนี้สิน' : 'ไม่มีหนี้สิน'}</p>
                   </div>
 
                   <div className="border border-slate-200 p-3 rounded">
-                    <b>3. พฤติกรรมที่บ้านและเวลาว่าง:</b>
-                    <p className="mt-1">หน้าที่ที่บ้าน: {homeVisit.choresAtHome}</p>
-                    <p className="mt-1">กิจกรรมยามว่าง: {homeVisit.freeTimeActivity}</p>
-                    <p className="mt-1">การใช้อุปกรณ์สื่อสาร/เกม: {homeVisit.gadgetUseHoursPerDay} ชั่วโมง/วัน</p>
+                    <b>3. การอยู่อาศัยและการเดินทาง:</b>
+                    <p className="mt-1">อาศัยอยู่ร่วมกับ: {homeVisit.livingWith} ({homeVisit.familyMembersCount} คน)</p>
+                    <p className="mt-1">ที่อยู่: {homeVisit.address}</p>
                   </div>
 
                   <div className="border border-slate-200 p-3 rounded">
                     <b>4. สิ่งที่ผู้ปกครองต้องการให้โรงเรียนช่วยเหลือ:</b>
-                    <p className="mt-1">{homeVisit.parentExpectation || 'ไม่มี'}</p>
+                    <p className="mt-1">{homeVisit.parentFeedback || (homeVisit.requestedSupport?.join(', ') || 'ไม่มี')}</p>
                     <b className="block mt-2">ข้อสังเกตและข้อเสนอแนะของครู:</b>
-                    <p className="mt-1">{homeVisit.teacherObservations || 'นักเรียนมีพฤติกรรมเรียบร้อยดี ควรสนับสนุนเรื่องทุนการศึกษา'}</p>
+                    <p className="mt-1">{homeVisit.teacherImpression || 'นักเรียนมีพฤติกรรมเรียบร้อยดี ควรสนับสนุนเรื่องทุนการศึกษา'}</p>
                   </div>
                 </div>
               ) : (
@@ -350,27 +349,27 @@ export const ReportModal: React.FC = () => {
                     <tr>
                       <td className="border border-slate-300 p-2 font-medium">1. ด้านการเรียน (Learning)</td>
                       <td className="border border-slate-300 p-2 text-center font-bold capitalize">{screening.dimensions.learning.status}</td>
-                      <td className="border border-slate-300 p-2">{screening.dimensions.learning.notes || '-'}</td>
+                      <td className="border border-slate-300 p-2">{screening.dimensions.learning.details || '-'}</td>
                     </tr>
                     <tr>
                       <td className="border border-slate-300 p-2 font-medium">2. ด้านสุขภาพกาย/จิต (Health)</td>
                       <td className="border border-slate-300 p-2 text-center font-bold capitalize">{screening.dimensions.health.status}</td>
-                      <td className="border border-slate-300 p-2">{screening.dimensions.health.notes || '-'}</td>
+                      <td className="border border-slate-300 p-2">{screening.dimensions.health.details || '-'}</td>
                     </tr>
                     <tr>
                       <td className="border border-slate-300 p-2 font-medium">3. ด้านเศรษฐกิจครอบครัว (Economic)</td>
                       <td className="border border-slate-300 p-2 text-center font-bold capitalize">{screening.dimensions.economic.status}</td>
-                      <td className="border border-slate-300 p-2">{screening.dimensions.economic.notes || '-'}</td>
+                      <td className="border border-slate-300 p-2">{screening.dimensions.economic.details || '-'}</td>
                     </tr>
                     <tr>
                       <td className="border border-slate-300 p-2 font-medium">4. ด้านพฤติกรรม/สารเสพติด (Behavior)</td>
                       <td className="border border-slate-300 p-2 text-center font-bold capitalize">{screening.dimensions.behavior.status}</td>
-                      <td className="border border-slate-300 p-2">{screening.dimensions.behavior.notes || '-'}</td>
+                      <td className="border border-slate-300 p-2">{screening.dimensions.behavior.details || '-'}</td>
                     </tr>
                     <tr>
                       <td className="border border-slate-300 p-2 font-medium">5. ด้านความปลอดภัยและการคุ้มครอง (Safety)</td>
                       <td className="border border-slate-300 p-2 text-center font-bold capitalize">{screening.dimensions.safety.status}</td>
-                      <td className="border border-slate-300 p-2">{screening.dimensions.safety.notes || '-'}</td>
+                      <td className="border border-slate-300 p-2">{screening.dimensions.safety.details || '-'}</td>
                     </tr>
                   </tbody>
                 </table>
